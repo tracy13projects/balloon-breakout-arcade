@@ -71,30 +71,43 @@ const modalCard = {
   boxShadow: "0 20px 60px rgba(0,0,0,.32)",
 };
 
+const finishOverlayStyle = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0,0,0,.72)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 45,
+  padding: 16,
+};
+
 const finishPanelStyle = {
-  margin: "18px auto",
   padding: 24,
   borderRadius: 22,
   border: "2px solid #22c55e",
-  background: "rgba(15,23,42,.9)",
-  boxShadow: "0 0 30px rgba(34,197,94,.35)",
+  background: "rgba(15,23,42,.96)",
+  boxShadow: "0 0 38px rgba(34,197,94,.42)",
   maxWidth: 460,
+  width: "min(460px, 94vw)",
   color: "white",
 };
 
 function FinishPanel({ title, score, high, combo, message, onPlayAgain, onUnlock }) {
   const isNewHigh = score > 0 && score >= high;
   return (
-    <div style={finishPanelStyle}>
-      <h2 style={{ fontSize: 32, margin: "0 0 10px" }}>{title}</h2>
-      <p style={{ fontSize: 24, fontWeight: "bold", margin: "8px 0" }}>Score: {score}</p>
-      <p style={{ color: "#cbd5e1", margin: "6px 0" }}>High Score: {high}</p>
-      {isNewHigh && <p style={{ color: "#fde047", fontWeight: "bold", margin: "10px 0" }}>🏆 New High Score!</p>}
-      {combo >= 5 && <p style={{ color: "#22c55e", fontWeight: "bold", margin: "10px 0" }}>🔥 Combo Power: {combo}</p>}
-      <p style={{ color: "#cbd5e1", marginTop: 12 }}>{message}</p>
-      <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-        <button onClick={onPlayAgain} style={greenButton}>▶ Play Again</button>
-        <button onClick={onUnlock} style={goldButton}>🎈 Unlock Challenges</button>
+    <div style={finishOverlayStyle}>
+      <div style={finishPanelStyle}>
+        <h2 style={{ fontSize: 32, margin: "0 0 10px" }}>{title}</h2>
+        <p style={{ fontSize: 24, fontWeight: "bold", margin: "8px 0" }}>Score: {score}</p>
+        <p style={{ color: "#cbd5e1", margin: "6px 0" }}>High Score: {high}</p>
+        {isNewHigh && <p style={{ color: "#fde047", fontWeight: "bold", margin: "10px 0" }}>🏆 New High Score!</p>}
+        {combo >= 5 && <p style={{ color: "#22c55e", fontWeight: "bold", margin: "10px 0" }}>🔥 Combo Power: {combo}</p>}
+        <p style={{ color: "#cbd5e1", marginTop: 12 }}>{message}</p>
+        <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <button onClick={onPlayAgain} style={greenButton}>▶ Play Again</button>
+          <button onClick={onUnlock} style={goldButton}>🎈 Unlock Challenges</button>
+        </div>
       </div>
     </div>
   );
@@ -581,4 +594,3 @@ export default function BalloonArcade() {
     </div>
   );
 }
-
