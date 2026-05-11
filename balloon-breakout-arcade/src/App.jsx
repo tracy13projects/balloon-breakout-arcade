@@ -196,6 +196,7 @@ function BreakoutGame({ goHome }) {
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState("Move your mouse or finger to control the paddle.");
   const [showOffer, setShowOffer] = useState(false);
+  const [showFinish, setShowFinish] = useState(false);
 
   function createLevel(level, score = 0, high = stats.high) {
     const balloons = [];
@@ -235,6 +236,7 @@ function BreakoutGame({ goHome }) {
 
   function startGame() {
     setShowOffer(false);
+    setShowFinish(false);
     setRunning(true);
     setMessage("Pop the balloons and protect your lives.");
     createLevel(stats.level || 1, stats.score || 0, stats.high || 0);
@@ -242,6 +244,7 @@ function BreakoutGame({ goHome }) {
 
   function continuePlaying() {
     setShowOffer(false);
+    setShowFinish(false);
     setRunning(true);
     createLevel(stats.level || 1, stats.score || 0, stats.high || 0);
   }
@@ -255,6 +258,7 @@ function BreakoutGame({ goHome }) {
     const nextScore = lost ? 0 : g.score;
     setStats({ level: nextLevel, score: nextScore, high, combo: 0, lives: lost ? 0 : g.lives });
     setRunning(false);
+    setShowFinish(true);
     setMessage(lost ? "Game over. Try again or unlock more challenges." : "Level cleared! Ready for the next challenge?");
   }
 
@@ -351,8 +355,10 @@ function BreakoutGame({ goHome }) {
         if (g.y > 408) {
           g.lives -= 1;
           g.combo = 0;
-          if (g.lives <= 0) finishRound(true);
-          else {
+          if (g.lives <= 0) {
+            finishRound(true);
+            return;
+          } else {
             g.x = 300;
             g.y = 250;
             g.dx = 3 + g.level * 0.18;
@@ -368,7 +374,10 @@ function BreakoutGame({ goHome }) {
           }
         });
         g.particles = g.particles.map((p) => ({ ...p, x: p.x + p.dx, y: p.y + p.dy, life: p.life - 1 })).filter((p) => p.life > 0);
-        if (g.balloons.every((b) => b.hit)) finishRound(false);
+        if (g.balloons.every((b) => b.hit)) {
+          finishRound(false);
+          return;
+        }
         setStats({ level: g.level, score: g.score, high: Math.max(g.high, g.score), combo: g.combo, lives: g.lives });
       }
       draw();
@@ -400,7 +409,7 @@ function BreakoutGame({ goHome }) {
       </div>
       <p>Level: {stats.level} {stats.level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {stats.score} | High: {stats.high} | Combo: {stats.combo} | Lives: {stats.lives}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
-      {!running && (stats.score > 0 || stats.lives === 0) && (
+      {showFinish && (
         <FinishPanel
           title={stats.lives === 0 ? "🎈 Game Over" : "🎉 Level Complete!"}
           score={stats.score}
@@ -572,3 +581,4 @@ export default function BalloonArcade() {
     </div>
   );
 }
+
