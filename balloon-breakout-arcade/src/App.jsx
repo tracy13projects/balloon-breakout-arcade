@@ -468,7 +468,8 @@ function PopRushGame({ goHome }) {
         {!running && (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.58)", padding: 24 }}>
             <div><h2>{time === 0 ? "Round Complete" : "Ready?"}</h2><p style={{ color: "#cbd5e1" }}>{message}</p></div>
-          </div><div
+      
+      <div
   style={{
     background: "rgba(15,23,42,0.92)",
     border: "2px solid #22c55e",
