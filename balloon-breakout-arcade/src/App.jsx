@@ -1,9 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const challengePackUrl = "https://www.goodnewslifestyle.shop/products/%F0%9F%8E%88-balloon-challenge-pack";
+const productUrl = "https://www.goodnewslifestyle.shop/products/%F0%9F%8E%88-balloon-challenge-pack";
 const creatorKitUrl = "https://www.goodnewslifestyle.shop/products/%F0%9F%8E%A5-balloon-creator-kit";
 
-const greenButtonStyle = {
+function openExternalUrl(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
+}
+
+const modalBackdrop = {
+  position: "fixed",
+  inset: 0,
+  background: "rgba(0,0,0,.7)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 30,
+};
+
+const modalCard = {
+  background: "white",
+  color: "black",
+  padding: 24,
+  borderRadius: 14,
+  width: 420,
+  maxWidth: "92vw",
+};
+
+const greenButton = {
+  display: "inline-block",
+  marginTop: 10,
   padding: "12px 18px",
   borderRadius: 12,
   border: 0,
@@ -14,6 +39,101 @@ const greenButtonStyle = {
   boxShadow: "0 0 20px rgba(34,197,94,.35)",
 };
 
+const greenWideButton = {
+  padding: "14px 18px",
+  borderRadius: 12,
+  border: 0,
+  background: "linear-gradient(90deg,#22c55e,#4ade80)",
+  color: "#052e16",
+  fontWeight: "bold",
+  cursor: "pointer",
+  display: "block",
+  width: "100%",
+  marginTop: 12,
+  boxShadow: "0 0 18px rgba(34,197,94,.35)",
+};
+
+const goldWideButton = {
+  padding: "14px 18px",
+  borderRadius: 12,
+  border: 0,
+  background: "linear-gradient(90deg,#f59e0b,#fde047)",
+  color: "#422006",
+  fontWeight: "bold",
+  cursor: "pointer",
+  display: "block",
+  width: "100%",
+  marginTop: 12,
+  boxShadow: "0 0 18px rgba(245,158,11,.35)",
+};
+
+const whiteWideButton = {
+  padding: "12px 18px",
+  borderRadius: 12,
+  border: "1px solid #cbd5e1",
+  background: "#f8fafc",
+  color: "#0f172a",
+  fontWeight: "bold",
+  cursor: "pointer",
+  display: "block",
+  width: "100%",
+  marginTop: 10,
+};
+
+const linkStyle = {
+  marginTop: 16,
+  cursor: "pointer",
+  color: "#475569",
+  textDecoration: "underline",
+};
+
+const smallCloseButton = {
+  marginTop: 12,
+  padding: "8px 12px",
+  borderRadius: 8,
+  border: "1px solid #cbd5e1",
+  background: "#fff",
+  cursor: "pointer",
+};
+
+const backButton = {
+  position: "absolute",
+  top: 18,
+  left: 18,
+  padding: "9px 12px",
+  borderRadius: 10,
+  border: "1px solid #334155",
+  background: "#1e293b",
+  color: "white",
+  cursor: "pointer",
+};
+
+const gameTitle = {
+  fontSize: 44,
+  marginBottom: 8,
+  textShadow: "0 0 25px rgba(96,165,250,.55)",
+};
+
+const gameSubtitle = {
+  color: "#cbd5e1",
+  fontSize: 18,
+};
+
+const achievementStyle = {
+  position: "fixed",
+  top: 30,
+  left: "50%",
+  transform: "translateX(-50%)",
+  background: "rgba(15,23,42,.92)",
+  color: "#fff",
+  padding: "14px 22px",
+  borderRadius: 14,
+  fontWeight: "bold",
+  fontSize: 20,
+  boxShadow: "0 0 30px rgba(96,165,250,.45)",
+  zIndex: 50,
+};
+
 const cardStyle = {
   background: "rgba(15,23,42,.8)",
   border: "1px solid #334155",
@@ -22,59 +142,43 @@ const cardStyle = {
   boxShadow: "0 0 30px rgba(96,165,250,.14)",
 };
 
-function BuyLink({ href, children, style = {} }) {
+function ProductOffer({ showOffer, setShowOffer, setShowUpsell, continuePlaying }) {
+  if (!showOffer) return null;
   return (
-    <a href={href} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-      <button style={{ ...greenButtonStyle, ...style }}>{children}</button>
-    </a>
-  );
-}
-
-function Achievement({ text }) {
-  return (
-    <div
-      style={{
-        position: "fixed",
-        top: 30,
-        left: "50%",
-        transform: "translateX(-50%)",
-        background: "rgba(15,23,42,.92)",
-        color: "#fff",
-        padding: "14px 22px",
-        borderRadius: 14,
-        fontWeight: "bold",
-        fontSize: 20,
-        boxShadow: "0 0 30px rgba(96,165,250,.45)",
-        zIndex: 50,
-      }}
-    >
-      {text}
+    <div style={modalBackdrop}>
+      <div style={modalCard}>
+        <h2>🎈 Unlock Balloon Challenges</h2>
+        <p>Unlock 25 real world balloon challenges, creator ideas, and party style games.</p>
+        <button onClick={() => openExternalUrl(productUrl)} style={greenWideButton}>
+          Unlock Challenges — $7
+        </button>
+        <button onClick={() => setShowUpsell(true)} style={whiteWideButton}>
+          See Balloon Creator Kit
+        </button>
+        <div onClick={continuePlaying} style={linkStyle}>
+          Continue Playing Free
+        </div>
+        <button onClick={() => setShowOffer(false)} style={smallCloseButton}>Close</button>
+      </div>
     </div>
   );
 }
 
-function GameShell({ title, subtitle, goHome, children }) {
+function CreatorUpsell({ showUpsell, setShowUpsell, continuePlaying }) {
+  if (!showUpsell) return null;
   return (
-    <div>
-      <button
-        onClick={goHome}
-        style={{
-          position: "absolute",
-          top: 18,
-          left: 18,
-          padding: "9px 12px",
-          borderRadius: 10,
-          border: "1px solid #334155",
-          background: "#1e293b",
-          color: "white",
-          cursor: "pointer",
-        }}
-      >
-        ← Arcade Menu
-      </button>
-      <h1 style={{ fontSize: 44, marginBottom: 8, textShadow: "0 0 25px rgba(96,165,250,.55)" }}>{title}</h1>
-      <p style={{ color: "#cbd5e1", fontSize: 18 }}>{subtitle}</p>
-      {children}
+    <div style={modalBackdrop}>
+      <div style={modalCard}>
+        <h2>Want more?</h2>
+        <p>Turn balloon challenges into content ideas, filming prompts, and replayable party moments.</p>
+        <button onClick={() => openExternalUrl(creatorKitUrl)} style={goldWideButton}>
+          Add Balloon Creator Kit — $19
+        </button>
+        <div onClick={continuePlaying} style={linkStyle}>
+          No Thanks, Continue Playing
+        </div>
+        <button onClick={() => setShowUpsell(false)} style={smallCloseButton}>Close</button>
+      </div>
     </div>
   );
 }
@@ -82,8 +186,8 @@ function GameShell({ title, subtitle, goHome, children }) {
 function EmailModal({ showEmail, setShowEmail, setShowOffer, continuePlaying }) {
   if (!showEmail) return null;
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 30 }}>
-      <div style={{ background: "white", color: "black", padding: 24, borderRadius: 14, width: 420, maxWidth: "92vw" }}>
+    <div style={modalBackdrop}>
+      <div style={modalCard}>
         <h2>Save score + unlock more</h2>
         <input placeholder="email" style={{ padding: 12, width: "100%", marginBottom: 12 }} />
         <button
@@ -91,11 +195,11 @@ function EmailModal({ showEmail, setShowEmail, setShowOffer, continuePlaying }) 
             setShowEmail(false);
             setShowOffer(true);
           }}
-          style={{ ...greenButtonStyle, display: "block", width: "100%", marginTop: 8 }}
+          style={greenWideButton}
         >
           Unlock More
         </button>
-        <div onClick={continuePlaying} style={{ marginTop: 16, cursor: "pointer", color: "#475569", textDecoration: "underline" }}>
+        <div onClick={continuePlaying} style={linkStyle}>
           Continue Playing Free
         </div>
       </div>
@@ -103,80 +207,35 @@ function EmailModal({ showEmail, setShowEmail, setShowOffer, continuePlaying }) 
   );
 }
 
-function ProductOffer({ showOffer, setShowUpsell, continuePlaying }) {
-  if (!showOffer) return null;
+function GameShell({ title, subtitle, goHome, children }) {
   return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 30 }}>
-      <div style={{ background: "white", color: "black", padding: 24, borderRadius: 14, width: 420, maxWidth: "92vw" }}>
-        <h2>🎈 Unlock Balloon Challenges</h2>
-        <p>Unlock 25 real world balloon challenges, creator ideas, and party style games.</p>
-        <BuyLink href={challengePackUrl} style={{ display: "block", width: "100%", marginTop: 12 }}>
-          Unlock Challenges — $7
-        </BuyLink>
-        <button
-          onClick={() => setShowUpsell(true)}
-          style={{
-            padding: "12px 18px",
-            borderRadius: 12,
-            border: "1px solid #cbd5e1",
-            background: "#f8fafc",
-            color: "#0f172a",
-            fontWeight: "bold",
-            cursor: "pointer",
-            display: "block",
-            width: "100%",
-            marginTop: 10,
-          }}
-        >
-          See Balloon Creator Kit
-        </button>
-        <div onClick={continuePlaying} style={{ marginTop: 16, cursor: "pointer", color: "#475569", textDecoration: "underline" }}>
-          Continue Playing Free
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CreatorUpsell({ showUpsell, continuePlaying }) {
-  if (!showUpsell) return null;
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 30 }}>
-      <div style={{ background: "white", color: "black", padding: 24, borderRadius: 14, width: 420, maxWidth: "92vw" }}>
-        <h2>Want more?</h2>
-        <p>Turn balloon challenges into content ideas, filming prompts, and replayable party moments.</p>
-        <BuyLink
-          href={creatorKitUrl}
-          style={{
-            display: "block",
-            width: "100%",
-            marginTop: 12,
-            background: "linear-gradient(90deg,#f59e0b,#fde047)",
-            color: "#422006",
-            boxShadow: "0 0 18px rgba(245,158,11,.35)",
-          }}
-        >
-          Add Balloon Creator Kit — $19
-        </BuyLink>
-        <div onClick={continuePlaying} style={{ marginTop: 16, cursor: "pointer", color: "#475569", textDecoration: "underline" }}>
-          No Thanks, Continue Playing
-        </div>
-      </div>
+    <div>
+      <button onClick={goHome} style={backButton}>
+        ← Arcade Menu
+      </button>
+      <h1 style={gameTitle}>{title}</h1>
+      <p style={gameSubtitle}>{subtitle}</p>
+      {children}
     </div>
   );
 }
 
 function MainOfferButton() {
   return (
-    <div style={{ marginTop: 12 }}>
-      <BuyLink href={challengePackUrl}>🎈 Unlock Balloon Challenges</BuyLink>
-    </div>
+    <button onClick={() => openExternalUrl(productUrl)} style={greenButton}>
+      🎈 Unlock Balloon Challenges
+    </button>
   );
+}
+
+function Achievement({ text }) {
+  return <div style={achievementStyle}>{text}</div>;
 }
 
 function BreakoutGame({ goHome }) {
   const canvasRef = useRef(null);
   const particlesRef = useRef([]);
+
   const [score, setScore] = useState(0);
   const [lives, setLives] = useState(3);
   const [level, setLevel] = useState(1);
@@ -186,6 +245,7 @@ function BreakoutGame({ goHome }) {
   const [achievement, setAchievement] = useState("");
   const [roundKey, setRoundKey] = useState(0);
   const [lastRoundLost, setLastRoundLost] = useState(false);
+
   const [showEmail, setShowEmail] = useState(false);
   const [showOffer, setShowOffer] = useState(false);
   const [showUpsell, setShowUpsell] = useState(false);
@@ -215,6 +275,7 @@ function BreakoutGame({ goHome }) {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+
     let cancelled = false;
     let animationId;
     let x = 300;
@@ -225,6 +286,7 @@ function BreakoutGame({ goHome }) {
     let bricks = [];
     let localLives = 3;
     let roundFinished = false;
+
     const totalBalloons = level % 5 === 0 ? 12 : 20 + level * 2;
 
     for (let i = 0; i < totalBalloons; i++) {
@@ -233,7 +295,14 @@ function BreakoutGame({ goHome }) {
       if (level % 5 === 0) type = "steel";
       else if (rand > 0.9) type = "gold";
       else if (rand > 0.8) type = "steel";
-      bricks.push({ x: 50 + (i % 10) * 50, y: 45 + Math.floor(i / 10) * 40, hit: false, hits: type === "steel" ? 2 : 1, type });
+
+      bricks.push({
+        x: 50 + (i % 10) * 50,
+        y: 45 + Math.floor(i / 10) * 40,
+        hit: false,
+        hits: type === "steel" ? 2 : 1,
+        type,
+      });
     }
 
     function drawBalloon(b) {
@@ -250,7 +319,9 @@ function BreakoutGame({ goHome }) {
     }
 
     function createParticles(x, y, color) {
-      for (let i = 0; i < 12; i++) particlesRef.current.push({ x, y, dx: (Math.random() - 0.5) * 5, dy: (Math.random() - 0.5) * 5, life: 30, color });
+      for (let i = 0; i < 12; i++) {
+        particlesRef.current.push({ x, y, dx: (Math.random() - 0.5) * 5, dy: (Math.random() - 0.5) * 5, life: 30, color });
+      }
     }
 
     function showAchievement(text) {
@@ -260,13 +331,16 @@ function BreakoutGame({ goHome }) {
 
     function draw() {
       ctx.clearRect(0, 0, 600, 400);
+
       if (level % 5 === 0) {
         ctx.fillStyle = "rgba(239,68,68,.15)";
         ctx.fillRect(0, 0, 600, 400);
       }
+
       ctx.strokeStyle = "#334155";
       ctx.lineWidth = 4;
       ctx.strokeRect(0, 0, 600, 400);
+
       const glow = ctx.createRadialGradient(x, y, 2, x, y, 18);
       glow.addColorStop(0, "#ffffff");
       glow.addColorStop(1, "#60a5fa");
@@ -274,6 +348,7 @@ function BreakoutGame({ goHome }) {
       ctx.beginPath();
       ctx.arc(x, y, 8, 0, Math.PI * 2);
       ctx.fill();
+
       const paddleGradient = ctx.createLinearGradient(paddle.x, 0, paddle.x + paddle.w, 0);
       paddleGradient.addColorStop(0, "#f59e0b");
       paddleGradient.addColorStop(1, "#fde047");
@@ -282,13 +357,18 @@ function BreakoutGame({ goHome }) {
       ctx.shadowBlur = 12;
       ctx.fillRect(paddle.x, 380, paddle.w, 10);
       ctx.shadowBlur = 0;
-      bricks.forEach((b) => { if (!b.hit) drawBalloon(b); });
+
+      bricks.forEach((b) => {
+        if (!b.hit) drawBalloon(b);
+      });
+
       particlesRef.current.forEach((p) => {
         ctx.fillStyle = p.color;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
         ctx.fill();
       });
+
       if (roundFinished) {
         ctx.fillStyle = "rgba(15,23,42,.75)";
         ctx.fillRect(0, 0, 600, 400);
@@ -305,15 +385,19 @@ function BreakoutGame({ goHome }) {
       const particleColor = b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899";
       createParticles(b.x, b.y, particleColor);
       b.hits -= 1;
+
       if (b.hits <= 0) {
         b.hit = true;
         if (b.type === "gold") {
           showAchievement("💥 Explosion Balloon!");
-          bricks.forEach((other) => { if (!other.hit && Math.abs(other.x - b.x) < 60 && Math.abs(other.y - b.y) < 60) other.hit = true; });
+          bricks.forEach((other) => {
+            if (!other.hit && Math.abs(other.x - b.x) < 60 && Math.abs(other.y - b.y) < 60) other.hit = true;
+          });
           setPowerUp("💥 Balloon Explosion!");
           setTimeout(() => setPowerUp(""), 1500);
         }
       }
+
       setCombo((c) => {
         const newCombo = c + 1;
         if (newCombo === 5) showAchievement("🔥 Combo Master!");
@@ -321,45 +405,60 @@ function BreakoutGame({ goHome }) {
         return newCombo;
       });
       setScore((s) => s + 1 + Math.floor(combo / 3));
+
       if (Math.random() > 0.9) {
         showAchievement("🟡 Power Up!");
         paddle.w = 150;
         setPowerUp("🟡 Big Paddle Active!");
-        setTimeout(() => { paddle.w = 100; setPowerUp(""); }, 5000);
+        setTimeout(() => {
+          paddle.w = 100;
+          setPowerUp("");
+        }, 5000);
       }
     }
 
     function updateParticles() {
-      particlesRef.current.forEach((p) => { p.x += p.dx; p.y += p.dy; p.life -= 1; });
+      particlesRef.current.forEach((p) => {
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life -= 1;
+      });
       particlesRef.current = particlesRef.current.filter((p) => p.life > 0);
     }
 
     function update() {
       if (roundFinished) return;
+
       updateParticles();
       x += dx;
       y += dy;
+
       if (x < 8 || x > 592) dx *= -1;
       if (y < 8) dy *= -1;
+
       if (y > 400) {
         localLives -= 1;
         setLives(localLives);
         setCombo(0);
+
         if (localLives <= 0) {
           roundFinished = true;
           finishRound(true);
           return;
         }
+
         x = 300;
         y = 220;
         dx = 3 + level * 0.35;
         dy = -3 - level * 0.35;
       }
+
       if (y > 370 && x > paddle.x && x < paddle.x + paddle.w) {
         const hitPos = (x - paddle.x) / paddle.w;
         dx = (hitPos - 0.5) * 7;
         dy = -Math.abs(dy);
       }
+
       bricks.forEach((b) => {
         if (!b.hit && Math.abs(x - b.x) < 18 && Math.abs(y - b.y) < 22) {
           dy *= -1;
@@ -368,6 +467,7 @@ function BreakoutGame({ goHome }) {
           setTimeout(() => (canvas.style.transform = "translateX(0px)"), 40);
         }
       });
+
       if (bricks.every((b) => b.hit)) {
         showAchievement(level % 5 === 0 ? "👑 Boss Crusher!" : "🎈 Level Cleared!");
         roundFinished = true;
@@ -382,40 +482,33 @@ function BreakoutGame({ goHome }) {
       animationId = requestAnimationFrame(loop);
     }
 
-    function moveFromPoint(clientX) {
+    function move(e) {
       const rect = canvas.getBoundingClientRect();
-      paddle.x = (clientX - rect.left) * (600 / rect.width) - paddle.w / 2;
+      paddle.x = (e.clientX - rect.left) * (600 / rect.width) - paddle.w / 2;
       if (paddle.x < 0) paddle.x = 0;
       if (paddle.x > 600 - paddle.w) paddle.x = 600 - paddle.w;
     }
-    function move(e) { moveFromPoint(e.clientX); }
-    function touchMove(e) { if (e.touches && e.touches[0]) moveFromPoint(e.touches[0].clientX); }
+
     window.addEventListener("mousemove", move);
-    canvas.addEventListener("touchmove", touchMove, { passive: true });
     loop();
+
     return () => {
       cancelled = true;
       if (animationId) cancelAnimationFrame(animationId);
       window.removeEventListener("mousemove", move);
-      canvas.removeEventListener("touchmove", touchMove);
     };
-  }, [level, roundKey]);
+  }, [level, roundKey, combo, score]);
 
   return (
     <GameShell title="🎈 Balloon Breakout Arcade" subtitle="Pop balloons, unlock power ups, survive boss rounds." goHome={goHome}>
-      <canvas
-        ref={canvasRef}
-        width={600}
-        height={400}
-        style={{ border: "4px solid #334155", borderRadius: 16, boxShadow: "0 0 35px rgba(96,165,250,.25)", background: "linear-gradient(#111827,#0f172a)", transition: "transform .05s ease", maxWidth: "94vw", touchAction: "none" }}
-      />
+      <canvas ref={canvasRef} width={600} height={400} style={{ border: "4px solid #334155", borderRadius: 16, boxShadow: "0 0 35px rgba(96,165,250,.25)", background: "linear-gradient(#111827,#0f172a)", transition: "transform .05s ease", maxWidth: "94vw" }} />
       <p>Level: {level} {level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {score} | High: {highScore} | Combo: {combo} | Lives: {lives}</p>
       {powerUp && <p style={{ color: "#fde047", fontWeight: "bold", fontSize: 18 }}>{powerUp}</p>}
       {achievement && <Achievement text={achievement} />}
       <MainOfferButton />
       <EmailModal showEmail={showEmail} setShowEmail={setShowEmail} setShowOffer={setShowOffer} continuePlaying={continuePlaying} />
-      <ProductOffer showOffer={showOffer} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
-      <CreatorUpsell showUpsell={showUpsell} continuePlaying={continuePlaying} />
+      <ProductOffer showOffer={showOffer} setShowOffer={setShowOffer} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
+      <CreatorUpsell showUpsell={showUpsell} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
     </GameShell>
   );
 }
@@ -428,12 +521,10 @@ function PopRushGame({ goHome }) {
   const [highScore, setHighScore] = useState(0);
   const [balloons, setBalloons] = useState([]);
   const [message, setMessage] = useState("Pop as many balloons as you can before the timer ends.");
-  const [showEmail, setShowEmail] = useState(false);
   const [showOffer, setShowOffer] = useState(false);
   const [showUpsell, setShowUpsell] = useState(false);
 
   function startRound() {
-    setShowEmail(false);
     setShowOffer(false);
     setShowUpsell(false);
     setRunning(true);
@@ -444,14 +535,18 @@ function PopRushGame({ goHome }) {
     setBalloons([]);
   }
 
-  function finishRound() {
+  function finishRound(finalScore = score) {
     setRunning(false);
-    setHighScore((h) => Math.max(h, score));
+    setHighScore((h) => Math.max(h, finalScore));
     setMessage("Round complete! Want more balloon challenges?");
-    setShowEmail(true);
+    setShowOffer(true);
   }
 
-  function continuePlaying() { startRound(); }
+  function continuePlaying() {
+    setShowOffer(false);
+    setShowUpsell(false);
+    startRound();
+  }
 
   useEffect(() => {
     if (!running) return;
@@ -459,7 +554,7 @@ function PopRushGame({ goHome }) {
       setTime((t) => {
         if (t <= 1) {
           clearInterval(timer);
-          finishRound();
+          finishRound(score);
           return 0;
         }
         return t - 1;
@@ -502,49 +597,52 @@ function PopRushGame({ goHome }) {
   }
 
   return (
-    <GameShell title="🎈 Balloon Pop Rush" subtitle="A quick party-style balloon challenge. Tap fast, build combos, avoid red traps." goHome={goHome}>
-      <div style={{ marginBottom: 12 }}><button onClick={startRound} style={greenButtonStyle}>Start Pop Rush</button></div>
-      <div style={{ position: "relative", width: 600, maxWidth: "94vw", height: 400, margin: "0 auto", border: "4px solid #334155", borderRadius: 18, overflow: "hidden", background: "radial-gradient(circle at top, #1e293b, #0f172a 65%)", boxShadow: "0 0 35px rgba(236,72,153,.22)" }}>
+    <GameShell title="🎈 Balloon Pop Rush" subtitle="A quick party-style balloon challenge. Tap balloons fast, build combos, and avoid red traps." goHome={goHome}>
+      <button onClick={startRound} style={greenButton}>Start Pop Rush</button>
+      <div style={{ position: "relative", width: 600, maxWidth: "94vw", height: 400, margin: "20px auto", border: "4px solid #334155", borderRadius: 18, overflow: "hidden", background: "radial-gradient(circle at top, #1e293b, #0f172a 65%)", boxShadow: "0 0 35px rgba(236,72,153,.22)" }}>
         {balloons.map((b) => (
-          <button key={b.id} onClick={() => popBalloon(b)} style={{ position: "absolute", left: `${b.left}%`, bottom: b.bottom, width: 52, height: 68, borderRadius: "50%", border: 0, cursor: "pointer", background: b.type === "gold" ? "#fde047" : b.type === "trap" ? "#ef4444" : "#ec4899", boxShadow: "inset -8px -10px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.25)" }} title={b.type} />
+          <button key={b.id} onClick={() => popBalloon(b)} style={{ position: "absolute", left: `${b.left}%`, bottom: b.bottom, width: 52, height: 68, borderRadius: "50%", border: 0, cursor: "pointer", background: b.type === "gold" ? "#fde047" : b.type === "trap" ? "#ef4444" : "#ec4899", boxShadow: "inset -8px -10px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.25)" }} />
         ))}
         {!running && (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.58)", padding: 24 }}>
-            <div><h2>{time === 0 ? "Round Complete" : "Ready?"}</h2><p style={{ color: "#cbd5e1" }}>{message}</p></div>
+            <div>
+              <h2>{time === 0 ? "Round Complete" : "Ready?"}</h2>
+              <p style={{ color: "#cbd5e1" }}>{message}</p>
+            </div>
           </div>
         )}
       </div>
       <p>Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
       <MainOfferButton />
-      <EmailModal showEmail={showEmail} setShowEmail={setShowEmail} setShowOffer={setShowOffer} continuePlaying={continuePlaying} />
-      <ProductOffer showOffer={showOffer} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
-      <CreatorUpsell showUpsell={showUpsell} continuePlaying={continuePlaying} />
+      <ProductOffer showOffer={showOffer} setShowOffer={setShowOffer} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
+      <CreatorUpsell showUpsell={showUpsell} setShowUpsell={setShowUpsell} continuePlaying={continuePlaying} />
     </GameShell>
   );
 }
 
 export default function BalloonArcade() {
   const [screen, setScreen] = useState("menu");
+
   return (
     <div style={{ textAlign: "center", color: "white", background: "radial-gradient(circle at top, #1e293b, #0f172a 60%)", minHeight: "100vh", paddingTop: 30, overflow: "hidden", fontFamily: "Arial, sans-serif" }}>
       {screen === "menu" && (
-        <div style={{ paddingTop: 70, maxWidth: 860, margin: "0 auto", paddingLeft: 18, paddingRight: 18 }}>
+        <div style={{ paddingTop: 70, maxWidth: 960, margin: "0 auto", paddingLeft: 18, paddingRight: 18 }}>
           <h1 style={{ fontSize: 52, marginBottom: 8, textShadow: "0 0 25px rgba(96,165,250,.55)" }}>🎈 Balloon Arcade</h1>
           <p style={{ color: "#cbd5e1", fontSize: 19 }}>Play free, chase your score, then unlock real world balloon challenges.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 20, marginTop: 34 }}>
             <div style={cardStyle}>
               <h2>🎈 Balloon Breakout</h2>
               <p style={{ color: "#cbd5e1" }}>The flagship arcade game. Pop balloons, survive boss rounds, and chase your high score.</p>
-              <button onClick={() => setScreen("breakout")} style={greenButtonStyle}>Play Breakout</button>
+              <button onClick={() => setScreen("breakout")} style={greenButton}>Play Breakout</button>
             </div>
             <div style={cardStyle}>
               <h2>🎈 Balloon Pop Rush</h2>
               <p style={{ color: "#cbd5e1" }}>A quick party-style challenge. Tap balloons fast, build combos, and avoid red traps.</p>
-              <button onClick={() => setScreen("poprush")} style={greenButtonStyle}>Play Pop Rush</button>
+              <button onClick={() => setScreen("poprush")} style={greenButton}>Play Pop Rush</button>
             </div>
           </div>
-          <div style={{ marginTop: 26 }}><MainOfferButton /></div>
+          <div style={{ marginTop: 28 }}><MainOfferButton /></div>
         </div>
       )}
       {screen === "breakout" && <BreakoutGame goHome={() => setScreen("menu")} />}
@@ -552,3 +650,4 @@ export default function BalloonArcade() {
     </div>
   );
 }
+
