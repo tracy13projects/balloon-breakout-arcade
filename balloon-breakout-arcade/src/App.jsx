@@ -468,73 +468,9 @@ function PopRushGame({ goHome }) {
         {!running && (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.58)", padding: 24 }}>
             <div><h2>{time === 0 ? "Round Complete" : "Ready?"}</h2><p style={{ color: "#cbd5e1" }}>{message}</p></div>
-      
-      <div
-  style={{
-    background: "rgba(15,23,42,0.92)",
-    border: "2px solid #22c55e",
-    borderRadius: 20,
-    padding: 32,
-    maxWidth: 420,
-    textAlign: "center",
-    boxShadow: "0 0 30px rgba(34,197,94,0.4)"
-  }}
->
-  <h1 style={{ fontSize: 42, marginBottom: 12 }}>
-    🎉 Round Complete!
-  </h1>
-
-  <p style={{ fontSize: 24, fontWeight: "bold" }}>
-    Score: {score}
-  </p>
-
-  <p style={{ color: "#cbd5e1", marginTop: 8 }}>
-    High Score: {highScore}
-  </p>
-
-  <p style={{ color: "#22c55e", marginTop: 18, fontWeight: "bold" }}>
-    🔥 Combo Power: {combo}
-  </p>
-
-  <p style={{ color: "#cbd5e1", marginTop: 16 }}>
-    {message}
-  </p>
-
-  <div style={{ marginTop: 24, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-    <button
-      onClick={startRound}
-      style={{
-        background: "#22c55e",
-        color: "#04130a",
-        border: "none",
-        borderRadius: 12,
-        padding: "12px 22px",
-        fontWeight: "bold",
-        cursor: "pointer"
-      }}
-    >
-      ▶ Play Again
-    </button>
-
-    <button
-      onClick={() => setShowOffer(true)}
-      style={{
-        background: "#f59e0b",
-        color: "#111827",
-        border: "none",
-        borderRadius: 12,
-        padding: "12px 22px",
-        fontWeight: "bold",
-        cursor: "pointer"
-      }}
-    >
-      🎈 Unlock Challenges
-    </button>
-  </div>
-</div>
+          </div>
+        )}
       </div>
-          )}
-        
       <p>Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
       <button onClick={() => setShowOffer(true)} style={greenButton}>🎈 Unlock Balloon Challenges</button>
@@ -583,5 +519,3 @@ export default function BalloonArcade() {
     </div>
   );
 }
-
-
