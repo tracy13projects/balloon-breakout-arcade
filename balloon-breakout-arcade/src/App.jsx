@@ -461,10 +461,18 @@ function BreakoutGame({ goHome }) {
 
       bricks.forEach((b) => {
         if (!b.hit && Math.abs(x - b.x) < 18 && Math.abs(y - b.y) < 22) {
-          dy *= -1;
-          hitBalloon(b);
-          canvas.style.transform = "translateX(2px)";
-          setTimeout(() => (canvas.style.transform = "translateX(0px)"), 40);
+  // move ball away from balloon so it does not get stuck re-hitting the same spot
+  y += dy > 0 ? -10 : 10;
+
+  // reverse direction with a tiny angle change for smoother arcade feel
+  dy *= -1;
+  dx += (Math.random() - 0.5) * 1.2;
+
+  hitBalloon(b);
+
+  canvas.style.transform = "translateX(2px)";
+  setTimeout(() => (canvas.style.transform = "translateX(0px)"), 40);
+}
         }
       });
 
