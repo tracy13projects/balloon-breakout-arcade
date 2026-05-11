@@ -71,6 +71,35 @@ const modalCard = {
   boxShadow: "0 20px 60px rgba(0,0,0,.32)",
 };
 
+const finishPanelStyle = {
+  margin: "18px auto",
+  padding: 24,
+  borderRadius: 22,
+  border: "2px solid #22c55e",
+  background: "rgba(15,23,42,.9)",
+  boxShadow: "0 0 30px rgba(34,197,94,.35)",
+  maxWidth: 460,
+  color: "white",
+};
+
+function FinishPanel({ title, score, high, combo, message, onPlayAgain, onUnlock }) {
+  const isNewHigh = score > 0 && score >= high;
+  return (
+    <div style={finishPanelStyle}>
+      <h2 style={{ fontSize: 32, margin: "0 0 10px" }}>{title}</h2>
+      <p style={{ fontSize: 24, fontWeight: "bold", margin: "8px 0" }}>Score: {score}</p>
+      <p style={{ color: "#cbd5e1", margin: "6px 0" }}>High Score: {high}</p>
+      {isNewHigh && <p style={{ color: "#fde047", fontWeight: "bold", margin: "10px 0" }}>🏆 New High Score!</p>}
+      {combo >= 5 && <p style={{ color: "#22c55e", fontWeight: "bold", margin: "10px 0" }}>🔥 Combo Power: {combo}</p>}
+      <p style={{ color: "#cbd5e1", marginTop: 12 }}>{message}</p>
+      <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+        <button onClick={onPlayAgain} style={greenButton}>▶ Play Again</button>
+        <button onClick={onUnlock} style={goldButton}>🎈 Unlock Challenges</button>
+      </div>
+    </div>
+  );
+}
+
 function openShopify(url) {
   window.open(url, "_blank", "noopener,noreferrer");
 }
@@ -227,7 +256,6 @@ function BreakoutGame({ goHome }) {
     setStats({ level: nextLevel, score: nextScore, high, combo: 0, lives: lost ? 0 : g.lives });
     setRunning(false);
     setMessage(lost ? "Game over. Try again or unlock more challenges." : "Level cleared! Ready for the next challenge?");
-    setShowOffer(true);
   }
 
   useEffect(() => {
@@ -372,6 +400,17 @@ function BreakoutGame({ goHome }) {
       </div>
       <p>Level: {stats.level} {stats.level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {stats.score} | High: {stats.high} | Combo: {stats.combo} | Lives: {stats.lives}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
+      {!running && (stats.score > 0 || stats.lives === 0) && (
+        <FinishPanel
+          title={stats.lives === 0 ? "🎈 Game Over" : "🎉 Level Complete!"}
+          score={stats.score}
+          high={stats.high}
+          combo={stats.combo}
+          message={message}
+          onPlayAgain={startGame}
+          onUnlock={() => setShowOffer(true)}
+        />
+      )}
       <button onClick={() => setShowOffer(true)} style={greenButton}>🎈 Unlock Balloon Challenges</button>
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
@@ -402,7 +441,6 @@ function PopRushGame({ goHome }) {
     setRunning(false);
     setHighScore((h) => Math.max(h, finalScore));
     setMessage("Round complete! Want more balloon challenges?");
-    setShowOffer(true);
   }
 
   function continuePlaying() {
@@ -466,8 +504,23 @@ function PopRushGame({ goHome }) {
           <button key={b.id} onClick={() => popBalloon(b)} style={{ position: "absolute", left: `${b.left}%`, bottom: b.bottom, width: 52, height: 68, borderRadius: "50%", border: 0, cursor: "pointer", background: b.type === "gold" ? "#fde047" : b.type === "trap" ? "#ef4444" : "#ec4899", boxShadow: "inset -8px -10px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.25)" }} />
         ))}
         {!running && (
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.58)", padding: 24 }}>
-            <div><h2>{time === 0 ? "Round Complete" : "Ready?"}</h2><p style={{ color: "#cbd5e1" }}>{message}</p></div>
+          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.62)", padding: 18 }}>
+            {time === 0 ? (
+              <FinishPanel
+                title="🎉 Round Complete!"
+                score={score}
+                high={highScore}
+                combo={combo}
+                message={message}
+                onPlayAgain={startRound}
+                onUnlock={() => setShowOffer(true)}
+              />
+            ) : (
+              <div>
+                <h2>Ready?</h2>
+                <p style={{ color: "#cbd5e1" }}>{message}</p>
+              </div>
+            )}
           </div>
         )}
       </div>
