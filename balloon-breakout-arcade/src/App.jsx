@@ -533,6 +533,8 @@ function PopRushGame({ goHome }) {
   </div>
 </div>
       </div>
+          )}
+        
       <p>Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
       <button onClick={() => setShowOffer(true)} style={greenButton}>🎈 Unlock Balloon Challenges</button>
