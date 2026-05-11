@@ -473,19 +473,7 @@ function BreakoutGame({ goHome }) {
 });
   
 
-  // reverse direction with a tiny angle change for smoother arcade feel
-  dy *= -1;
-  dx += (Math.random() - 0.5) * 1.2;
-
-  hitBalloon(b);
-
-  canvas.style.transform = "translateX(2px)";
-  setTimeout(() => (canvas.style.transform = "translateX(0px)"), 40);
-}
-        }
-      });
-
-      if (bricks.every((b) => b.hit)) {
+        if (bricks.every((b) => b.hit)) {
         showAchievement(level % 5 === 0 ? "👑 Boss Crusher!" : "🎈 Level Cleared!");
         roundFinished = true;
         finishRound(false);
