@@ -501,7 +501,7 @@ function PopRushGame({ goHome }) {
 
   <div style={{ marginTop: 24, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
     <button
-      onClick={startGame}
+      onClick={startRound}
       style={{
         background: "#22c55e",
         color: "#04130a",
