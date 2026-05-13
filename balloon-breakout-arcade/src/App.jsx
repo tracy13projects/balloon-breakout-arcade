@@ -433,7 +433,6 @@ function BreakoutGame({ goHome }) {
           onUnlock={() => setShowOffer(true)}
         />
       )}
-      <button onClick={() => setShowOffer(true)} style={greenButton}>🎈 Unlock Balloon Challenges</button>
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
   );
