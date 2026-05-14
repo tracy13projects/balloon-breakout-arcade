@@ -502,6 +502,20 @@ if (g.combo >= 3) {
       </div>
       <p>Level: {stats.level} {stats.level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {stats.score} | High: {stats.high} | Combo: {stats.combo} | Lives: {stats.lives}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
+{comboFlash && (
+  <div
+    style={{
+      fontSize: 32,
+      fontWeight: "bold",
+      color: "#fde047",
+      textShadow: "0 0 18px rgba(253,224,71,.9)",
+      marginTop: 10,
+      animation: "pulse 0.4s ease-in-out",
+    }}
+  >
+    {comboFlash}
+  </div>
+)}
       {showFinish && (
         <FinishPanel
           title={stats.lives === 0 ? "🎈 Game Over" : "🎉 Level Complete!"}
