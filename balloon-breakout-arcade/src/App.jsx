@@ -95,15 +95,28 @@ const finishPanelStyle = {
 
 function FinishPanel({ title, score, high, combo, message, onPlayAgain, onUnlock }) {
   const isNewHigh = score > 0 && score >= high;
+
   return (
     <div style={finishOverlayStyle}>
       <div style={finishPanelStyle}>
         <h2 style={{ fontSize: 32, margin: "0 0 10px" }}>{title}</h2>
         <p style={{ fontSize: 24, fontWeight: "bold", margin: "8px 0" }}>Score: {score}</p>
         <p style={{ color: "#cbd5e1", margin: "6px 0" }}>High Score: {high}</p>
-        {isNewHigh && <p style={{ color: "#fde047", fontWeight: "bold", margin: "10px 0" }}>🏆 New High Score!</p>}
-        {combo >= 5 && <p style={{ color: "#22c55e", fontWeight: "bold", margin: "10px 0" }}>🔥 Combo Power: {combo}</p>}
+
+        {isNewHigh && (
+          <p style={{ color: "#fde047", fontWeight: "bold", margin: "10px 0" }}>
+            🏆 New High Score!
+          </p>
+        )}
+
+        {combo >= 5 && (
+          <p style={{ color: "#22c55e", fontWeight: "bold", margin: "10px 0" }}>
+            🔥 Combo Power: {combo}
+          </p>
+        )}
+
         <p style={{ color: "#cbd5e1", marginTop: 12 }}>{message}</p>
+
         <div style={{ marginTop: 18, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
           <button onClick={onPlayAgain} style={greenButton}>▶ Play Again</button>
           <button onClick={onUnlock} style={goldButton}>🎈 Unlock Challenges</button>
@@ -119,6 +132,7 @@ function openShopify(url) {
 
 function OfferModal({ isOpen, onClose, onContinue, title = "🎈 Unlock Balloon Challenges" }) {
   const [showCreator, setShowCreator] = useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -130,18 +144,22 @@ function OfferModal({ isOpen, onClose, onContinue, title = "🎈 Unlock Balloon 
             <p style={{ fontSize: 18 }}>
               Unlock 25 real world balloon challenges, creator ideas, and party style games.
             </p>
+
             <button onClick={() => openShopify(productUrl)} style={{ ...greenButton, width: "100%" }}>
               Unlock Challenges — $7
             </button>
+
             <button onClick={() => setShowCreator(true)} style={ghostButton}>
               See Balloon Creator Kit
             </button>
+
             <div
               onClick={onContinue}
               style={{ marginTop: 18, cursor: "pointer", color: "#475569", textDecoration: "underline", fontSize: 18 }}
             >
               Continue Playing Free
             </div>
+
             <button onClick={onClose} style={{ marginTop: 14, padding: "9px 14px", borderRadius: 10 }}>
               Close
             </button>
@@ -152,18 +170,22 @@ function OfferModal({ isOpen, onClose, onContinue, title = "🎈 Unlock Balloon 
             <p style={{ fontSize: 18 }}>
               Add creator prompts, filming ideas, advanced challenge variations, and replayable party formats.
             </p>
+
             <button onClick={() => openShopify(creatorKitUrl)} style={{ ...goldButton, width: "100%" }}>
               Add Balloon Creator Kit — $19
             </button>
+
             <button onClick={() => setShowCreator(false)} style={ghostButton}>
               Back To $7 Challenge Pack
             </button>
+
             <div
               onClick={onContinue}
               style={{ marginTop: 18, cursor: "pointer", color: "#475569", textDecoration: "underline", fontSize: 18 }}
             >
               No Thanks, Continue Playing
             </div>
+
             <button onClick={onClose} style={{ marginTop: 14, padding: "9px 14px", borderRadius: 10 }}>
               Close
             </button>
@@ -174,7 +196,6 @@ function OfferModal({ isOpen, onClose, onContinue, title = "🎈 Unlock Balloon 
   );
 }
 
-
 function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -183,7 +204,9 @@ function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 })
 
   function handleSubmit(e) {
     e.preventDefault();
+
     const cleanEmail = email.trim();
+
     if (!cleanEmail || !cleanEmail.includes("@")) {
       setError("Please enter a valid email address.");
       return;
@@ -208,6 +231,7 @@ function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 })
         <p style={{ fontSize: 18 }}>
           Enter your email to unlock bonus levels, arcade updates, and future balloon challenge drops.
         </p>
+
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -224,17 +248,21 @@ function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 })
               boxSizing: "border-box",
             }}
           />
+
           {error && <p style={{ color: "#dc2626", marginBottom: 0 }}>{error}</p>}
+
           <button type="submit" style={{ ...greenButton, width: "100%", marginTop: 14 }}>
             Unlock Bonus Levels
           </button>
         </form>
+
         <div
           onClick={onContinue}
           style={{ marginTop: 18, cursor: "pointer", color: "#475569", textDecoration: "underline", fontSize: 18 }}
         >
           Continue Playing Free
         </div>
+
         <button onClick={onClose} style={{ marginTop: 14, padding: "9px 14px", borderRadius: 10 }}>
           Close
         </button>
@@ -262,8 +290,13 @@ function GameShell({ title, subtitle, goHome, children }) {
       >
         ← Arcade Menu
       </button>
-      <h1 style={{ fontSize: 44, marginBottom: 8, textShadow: "0 0 25px rgba(96,165,250,.55)" }}>{title}</h1>
+
+      <h1 style={{ fontSize: 44, marginBottom: 8, textShadow: "0 0 25px rgba(96,165,250,.55)" }}>
+        {title}
+      </h1>
+
       <p style={{ color: "#cbd5e1", fontSize: 18 }}>{subtitle}</p>
+
       {children}
     </div>
   );
@@ -274,6 +307,7 @@ function BreakoutGame({ goHome }) {
   const rafRef = useRef(null);
   const mouseXRef = useRef(300);
   const gameRef = useRef(null);
+
   const [stats, setStats] = useState({ level: 1, score: 0, high: 0, combo: 0, lives: 3 });
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState("Move your mouse or finger to control the paddle.");
@@ -286,10 +320,12 @@ function BreakoutGame({ goHome }) {
     const balloons = [];
     const rows = level % 5 === 0 ? 2 : 3;
     const cols = 10;
+
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         const rand = Math.random();
         const type = level % 5 === 0 ? "steel" : rand > 0.9 ? "gold" : rand > 0.8 ? "steel" : "normal";
+
         balloons.push({
           x: 55 + c * 54,
           y: 48 + r * 44,
@@ -299,6 +335,7 @@ function BreakoutGame({ goHome }) {
         });
       }
     }
+
     gameRef.current = {
       x: 300,
       y: 250,
@@ -315,6 +352,7 @@ function BreakoutGame({ goHome }) {
       particles: [],
       over: false,
     };
+
     setStats({ level, score, high, combo: 0, lives: 3 });
   }
 
@@ -322,6 +360,7 @@ function BreakoutGame({ goHome }) {
     setShowOffer(false);
     setShowEmail(false);
     setShowFinish(false);
+    setComboFlash("");
     setRunning(true);
     setMessage("Pop the balloons and protect your lives.");
     createLevel(stats.level || 1, stats.score || 0, stats.high || 0);
@@ -331,20 +370,26 @@ function BreakoutGame({ goHome }) {
     setShowOffer(false);
     setShowEmail(false);
     setShowFinish(false);
+    setComboFlash("");
     setRunning(true);
     createLevel(stats.level || 1, stats.score || 0, stats.high || 0);
   }
 
   function finishRound(lost) {
     const g = gameRef.current;
+
     if (!g || g.over) return;
+
     g.over = true;
+
     const high = Math.max(g.high, g.score);
     const nextLevel = lost ? 1 : g.level + 1;
     const nextScore = lost ? 0 : g.score;
-    setStats({ level: nextLevel, score: nextScore, high, combo: 0, lives: lost ? 0 : g.lives });
+
+    setStats({ level: nextLevel, score: nextScore, high, combo: g.combo, lives: lost ? 0 : g.lives });
     setRunning(false);
     setShowFinish(true);
+    setComboFlash("");
     setMessage(lost ? "Game over. Try again or unlock more challenges." : "Level cleared! Ready for the next challenge?");
   }
 
@@ -357,6 +402,7 @@ function BreakoutGame({ goHome }) {
       ctx.beginPath();
       ctx.ellipse(b.x, b.y, 14, 18, 0, 0, Math.PI * 2);
       ctx.fill();
+
       ctx.fillStyle = "rgba(255,255,255,.5)";
       ctx.beginPath();
       ctx.arc(b.x - 5, b.y - 7, 3, 0, Math.PI * 2);
@@ -365,29 +411,45 @@ function BreakoutGame({ goHome }) {
 
     function addParticles(x, y, color) {
       const g = gameRef.current;
+
       for (let i = 0; i < 10; i++) {
-        g.particles.push({ x, y, dx: (Math.random() - 0.5) * 5, dy: (Math.random() - 0.5) * 5, life: 24, color });
+        g.particles.push({
+          x,
+          y,
+          dx: (Math.random() - 0.5) * 5,
+          dy: (Math.random() - 0.5) * 5,
+          life: 24,
+          color,
+        });
       }
     }
 
     function hitBalloon(g, b) {
       b.hits -= 1;
-           addParticles(b.x, b.y, b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899");
+
+      addParticles(b.x, b.y, b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899");
+
       if (b.hits <= 0) {
         b.hit = true;
+
         const add = b.type === "gold" ? 5 : 1 + Math.floor(g.combo / 4);
+
         g.score += add;
         g.combo += 1;
-        if (g.combo === 3) setComboFlash("✨ NICE!");
-if (g.combo === 5) setComboFlash("🔥 HOT STREAK!");
-if (g.combo === 10) setComboFlash("🎈 BALLOON MASTER!");
 
-if (g.combo >= 3) {
-  setTimeout(() => setComboFlash(""), 1200);
-}
+        if (g.combo === 3) setComboFlash("✨ NICE!");
+        if (g.combo === 5) setComboFlash("🔥 HOT STREAK!");
+        if (g.combo === 10) setComboFlash("🎈 BALLOON MASTER!");
+
+        if (g.combo >= 3) {
+          setTimeout(() => setComboFlash(""), 1200);
+        }
+
         if (b.type === "gold") {
           g.balloons.forEach((other) => {
-            if (!other.hit && Math.abs(other.x - b.x) < 60 && Math.abs(other.y - b.y) < 60) other.hit = true;
+            if (!other.hit && Math.abs(other.x - b.x) < 60 && Math.abs(other.y - b.y) < 60) {
+              other.hit = true;
+            }
           });
         }
       }
@@ -395,36 +457,49 @@ if (g.combo >= 3) {
 
     function draw() {
       const g = gameRef.current;
+
       ctx.clearRect(0, 0, 600, 400);
       ctx.fillStyle = "#0f172a";
       ctx.fillRect(0, 0, 600, 400);
+
       if (g?.level % 5 === 0) {
         ctx.fillStyle = "rgba(239,68,68,.14)";
         ctx.fillRect(0, 0, 600, 400);
       }
+
       ctx.strokeStyle = "#334155";
       ctx.lineWidth = 4;
       ctx.strokeRect(0, 0, 600, 400);
+
       if (!g) return;
-      g.balloons.forEach((b) => { if (!b.hit) drawBalloon(b); });
+
+      g.balloons.forEach((b) => {
+        if (!b.hit) drawBalloon(b);
+      });
+
       g.particles.forEach((p) => {
         ctx.fillStyle = p.color;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
         ctx.fill();
       });
+
       const glow = ctx.createRadialGradient(g.x, g.y, 2, g.x, g.y, 18);
       glow.addColorStop(0, "#ffffff");
       glow.addColorStop(1, "#60a5fa");
+
       ctx.fillStyle = glow;
       ctx.beginPath();
       ctx.arc(g.x, g.y, 8, 0, Math.PI * 2);
       ctx.fill();
+
       const grad = ctx.createLinearGradient(g.paddleX, 0, g.paddleX + g.paddleW, 0);
       grad.addColorStop(0, "#f59e0b");
       grad.addColorStop(1, "#fde047");
+
       ctx.fillStyle = grad;
       ctx.fillRect(g.paddleX, 380, g.paddleW, 10);
+
       if (!running) {
         ctx.fillStyle = "rgba(15,23,42,.62)";
         ctx.fillRect(0, 0, 600, 400);
@@ -433,31 +508,38 @@ if (g.combo >= 3) {
 
     function tick() {
       const g = gameRef.current;
+
       if (running && g && !g.over) {
         g.paddleX = Math.max(0, Math.min(600 - g.paddleW, mouseXRef.current - g.paddleW / 2));
         g.x += g.dx;
         g.y += g.dy;
+
         if (g.x < 8 || g.x > 592) g.dx *= -1;
         if (g.y < 8) g.dy *= -1;
+
         if (g.y > 370 && g.y < 392 && g.x > g.paddleX && g.x < g.paddleX + g.paddleW) {
           const hitPos = (g.x - g.paddleX) / g.paddleW;
           g.dx = (hitPos - 0.5) * 7;
           g.dy = -Math.abs(g.dy);
           g.y = 368;
         }
+
         if (g.y > 408) {
           g.lives -= 1;
           g.combo = 0;
+          setComboFlash("");
+
           if (g.lives <= 0) {
             finishRound(true);
             return;
-          } else {
-            g.x = 300;
-            g.y = 250;
-            g.dx = 3 + g.level * 0.18;
-            g.dy = -3.6 - g.level * 0.12;
           }
+
+          g.x = 300;
+          g.y = 250;
+          g.dx = 3 + g.level * 0.18;
+          g.dy = -3.6 - g.level * 0.12;
         }
+
         g.balloons.forEach((b) => {
           if (!b.hit && Math.abs(g.x - b.x) < 20 && Math.abs(g.y - b.y) < 24) {
             g.y += g.dy > 0 ? -12 : 12;
@@ -466,13 +548,25 @@ if (g.combo >= 3) {
             hitBalloon(g, b);
           }
         });
-        g.particles = g.particles.map((p) => ({ ...p, x: p.x + p.dx, y: p.y + p.dy, life: p.life - 1 })).filter((p) => p.life > 0);
+
+        g.particles = g.particles
+          .map((p) => ({ ...p, x: p.x + p.dx, y: p.y + p.dy, life: p.life - 1 }))
+          .filter((p) => p.life > 0);
+
         if (g.balloons.every((b) => b.hit)) {
           finishRound(false);
           return;
         }
-        setStats({ level: g.level, score: g.score, high: Math.max(g.high, g.score), combo: g.combo, lives: g.lives });
+
+        setStats({
+          level: g.level,
+          score: g.score,
+          high: Math.max(g.high, g.score),
+          combo: g.combo,
+          lives: g.lives,
+        });
       }
+
       draw();
       rafRef.current = requestAnimationFrame(tick);
     }
@@ -485,8 +579,11 @@ if (g.combo >= 3) {
 
     canvas.addEventListener("mousemove", setPointer);
     canvas.addEventListener("touchmove", setPointer, { passive: true });
+
     if (!gameRef.current) createLevel(1, 0, 0);
+
     rafRef.current = requestAnimationFrame(tick);
+
     return () => {
       cancelAnimationFrame(rafRef.current);
       canvas.removeEventListener("mousemove", setPointer);
@@ -496,26 +593,46 @@ if (g.combo >= 3) {
 
   return (
     <GameShell title="🎈 Balloon Breakout Arcade" subtitle="Pop balloons, unlock power ups, survive boss rounds." goHome={goHome}>
-      <button onClick={startGame} style={greenButton}>{running ? "Restart Breakout" : "Start Breakout"}</button>
+      <button onClick={startGame} style={greenButton}>
+        {running ? "Restart Breakout" : "Start Breakout"}
+      </button>
+
       <div style={{ marginTop: 14 }}>
-        <canvas ref={canvasRef} width={600} height={400} style={{ border: "4px solid #334155", borderRadius: 16, boxShadow: "0 0 35px rgba(96,165,250,.25)", maxWidth: "94vw", touchAction: "none" }} />
+        <canvas
+          ref={canvasRef}
+          width={600}
+          height={400}
+          style={{
+            border: "4px solid #334155",
+            borderRadius: 16,
+            boxShadow: "0 0 35px rgba(96,165,250,.25)",
+            maxWidth: "94vw",
+            touchAction: "none",
+          }}
+        />
       </div>
-      <p>Level: {stats.level} {stats.level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {stats.score} | High: {stats.high} | Combo: {stats.combo} | Lives: {stats.lives}</p>
+
+      <p>
+        Level: {stats.level} {stats.level % 5 === 0 ? "🔥 BOSS" : ""} | Score: {stats.score} | High: {stats.high} | Combo: {stats.combo} | Lives: {stats.lives}
+      </p>
+
       <p style={{ color: "#cbd5e1" }}>{message}</p>
-{comboFlash && (
-  <div
-    style={{
-      fontSize: 32,
-      fontWeight: "bold",
-      color: "#fde047",
-      textShadow: "0 0 18px rgba(253,224,71,.9)",
-      marginTop: 10,
-      animation: "pulse 0.4s ease-in-out",
-    }}
-  >
-    {comboFlash}
-  </div>
-)}
+
+      {comboFlash && (
+        <div
+          style={{
+            fontSize: 32,
+            fontWeight: "bold",
+            color: "#fde047",
+            textShadow: "0 0 18px rgba(253,224,71,.9)",
+            marginTop: 10,
+            animation: "pulse 0.4s ease-in-out",
+          }}
+        >
+          {comboFlash}
+        </div>
+      )}
+
       {showFinish && (
         <FinishPanel
           title={stats.lives === 0 ? "🎈 Game Over" : "🎉 Level Complete!"}
@@ -527,19 +644,26 @@ if (g.combo >= 3) {
           onUnlock={() => setShowEmail(true)}
         />
       )}
+
       <EmailCaptureModal
         isOpen={showEmail}
         score={stats.score}
         onClose={() => setShowEmail(false)}
-        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onSubmit={() => {
+          setShowEmail(false);
+          setShowOffer(true);
+        }}
         onContinue={continuePlaying}
       />
+
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
   );
 }
 
 function PopRushGame({ goHome }) {
+  const endTimeRef = useRef(null);
+
   const [running, setRunning] = useState(false);
   const [time, setTime] = useState(30);
   const [score, setScore] = useState(0);
@@ -549,8 +673,7 @@ function PopRushGame({ goHome }) {
   const [message, setMessage] = useState("Pop as many balloons as you can before the timer ends.");
   const [showOffer, setShowOffer] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-const endTimeRef = useRef(null);
-  
+
   function startRound() {
     setShowOffer(false);
     setShowEmail(false);
@@ -570,68 +693,81 @@ const endTimeRef = useRef(null);
   }
 
   function continuePlaying() {
-function continuePlaying() {
-  setShowOffer(false);
-  setShowEmail(false);
-  startRound();
-}
-
-useEffect(() => {
-  if (!running) return;
-
-  const timer = setInterval(() => {
-    const remaining = Math.max(
-      0,
-      Math.ceil((endTimeRef.current - Date.now()) / 1000)
-    );
-
-    setTime(remaining);
-
-    if (remaining <= 0) {
-      clearInterval(timer);
-      finishRound(score);
-    }
-  }, 100);
-
-  return () => clearInterval(timer);
-}, [running, score]);
-
-useEffect(() => {
-  if (!running) return;
-  const spawner = setInterval(() => {
     setShowOffer(false);
     setShowEmail(false);
     startRound();
   }
 
-    useEffect(() => {
+  useEffect(() => {
     if (!running) return;
+
+    const timer = setInterval(() => {
+      const remaining = Math.max(
+        0,
+        Math.ceil((endTimeRef.current - Date.now()) / 1000)
+      );
+
+      setTime(remaining);
+
+      if (remaining <= 0) {
+        clearInterval(timer);
+        finishRound(score);
+      }
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, [running, score]);
+
+  useEffect(() => {
+    if (!running) return;
+
     const spawner = setInterval(() => {
       const rand = Math.random();
       const type = rand > 0.88 ? "gold" : rand < 0.14 ? "trap" : "normal";
-      setBalloons((b) => [...b, { id: Date.now() + Math.random(), left: Math.random() * 82 + 6, bottom: -70, speed: 1.2 + Math.random() * 1.7, type }]);
+
+      setBalloons((b) => [
+        ...b,
+        {
+          id: Date.now() + Math.random(),
+          left: Math.random() * 82 + 6,
+          bottom: -70,
+          speed: 1.2 + Math.random() * 1.7,
+          type,
+        },
+      ]);
     }, 650);
+
     return () => clearInterval(spawner);
   }, [running]);
 
   useEffect(() => {
     if (!running) return;
+
     const mover = setInterval(() => {
-      setBalloons((items) => items.map((b) => ({ ...b, bottom: b.bottom + b.speed })).filter((b) => b.bottom < 420));
+      setBalloons((items) =>
+        items
+          .map((b) => ({ ...b, bottom: b.bottom + b.speed }))
+          .filter((b) => b.bottom < 420)
+      );
     }, 40);
+
     return () => clearInterval(mover);
   }, [running]);
 
   function popBalloon(balloon) {
     if (!running) return;
+
     setBalloons((items) => items.filter((b) => b.id !== balloon.id));
+
     if (balloon.type === "trap") {
       setScore((s) => Math.max(0, s - 3));
       setCombo(0);
       setMessage("Oops! Red balloon penalty.");
       return;
     }
+
     const points = balloon.type === "gold" ? 5 : 1 + Math.floor(combo / 4);
+
     setScore((s) => s + points);
     setCombo((c) => c + 1);
     setMessage(balloon.type === "gold" ? "Gold bonus!" : "Pop! Keep going.");
@@ -639,13 +775,55 @@ useEffect(() => {
 
   return (
     <GameShell title="🎈 Balloon Pop Rush" subtitle="A quick party-style balloon challenge. Tap balloons fast, build combos, and avoid red traps." goHome={goHome}>
-      <button onClick={startRound} style={greenButton}>{running ? "Restart Pop Rush" : "Start Pop Rush"}</button>
-      <div style={{ position: "relative", width: 600, maxWidth: "94vw", height: 400, margin: "20px auto", border: "4px solid #334155", borderRadius: 18, overflow: "hidden", background: "radial-gradient(circle at top, #1e293b, #0f172a 65%)", boxShadow: "0 0 35px rgba(236,72,153,.22)" }}>
+      <button onClick={startRound} style={greenButton}>
+        {running ? "Restart Pop Rush" : "Start Pop Rush"}
+      </button>
+
+      <div
+        style={{
+          position: "relative",
+          width: 600,
+          maxWidth: "94vw",
+          height: 400,
+          margin: "20px auto",
+          overflow: "hidden",
+          border: "4px solid #334155",
+          borderRadius: 18,
+          background: "radial-gradient(circle at top, #1e293b, #0f172a 65%)",
+          boxShadow: "0 0 35px rgba(236,72,153,.22)",
+        }}
+      >
         {balloons.map((b) => (
-          <button key={b.id} onClick={() => popBalloon(b)} style={{ position: "absolute", left: `${b.left}%`, bottom: b.bottom, width: 52, height: 68, borderRadius: "50%", border: 0, cursor: "pointer", background: b.type === "gold" ? "#fde047" : b.type === "trap" ? "#ef4444" : "#ec4899", boxShadow: "inset -8px -10px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.25)" }} />
+          <button
+            key={b.id}
+            onClick={() => popBalloon(b)}
+            style={{
+              position: "absolute",
+              left: `${b.left}%`,
+              bottom: b.bottom,
+              width: 52,
+              height: 68,
+              borderRadius: "50%",
+              border: 0,
+              cursor: "pointer",
+              background: b.type === "gold" ? "#fde047" : b.type === "trap" ? "#ef4444" : "#ec4899",
+              boxShadow: "inset -8px -10px rgba(0,0,0,.14), 0 8px 16px rgba(0,0,0,.25)",
+            }}
+          />
         ))}
+
         {!running && (
-          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(15,23,42,.62)", padding: 18 }}>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "rgba(15,23,42,.62)",
+              padding: 18,
+            }}
+          >
             {time === 0 ? (
               <FinishPanel
                 title="🎉 Round Complete!"
@@ -665,15 +843,24 @@ useEffect(() => {
           </div>
         )}
       </div>
-      <p>Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}</p>
+
+      <p>
+        Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}
+      </p>
+
       <p style={{ color: "#cbd5e1" }}>{message}</p>
+
       <EmailCaptureModal
         isOpen={showEmail}
         score={score}
         onClose={() => setShowEmail(false)}
-        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onSubmit={() => {
+          setShowEmail(false);
+          setShowOffer(true);
+        }}
         onContinue={continuePlaying}
       />
+
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
   );
@@ -682,20 +869,32 @@ useEffect(() => {
 function ArcadeMenu({ setScreen, openOffer }) {
   return (
     <div style={{ maxWidth: 980, margin: "0 auto", paddingTop: 56 }}>
-      <h1 style={{ fontSize: 58, marginBottom: 8, textShadow: "0 0 28px rgba(96,165,250,.55)" }}>🎈 Balloon Arcade</h1>
-      <p style={{ color: "#cbd5e1", fontSize: 20 }}>Play free, chase your score, then unlock real world balloon challenges.</p>
+      <h1 style={{ fontSize: 58, marginBottom: 8, textShadow: "0 0 28px rgba(96,165,250,.55)" }}>
+        🎈 Balloon Arcade
+      </h1>
+
+      <p style={{ color: "#cbd5e1", fontSize: 20 }}>
+        Play free, chase your score, then unlock real world balloon challenges.
+      </p>
+
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, marginTop: 38 }}>
         <div style={cardStyle}>
           <h2>🎈 Balloon Breakout</h2>
-          <p style={{ color: "#cbd5e1", fontSize: 18 }}>The flagship arcade game. Pop balloons, survive boss rounds, and chase your high score.</p>
+          <p style={{ color: "#cbd5e1", fontSize: 18 }}>
+            The flagship arcade game. Pop balloons, survive boss rounds, and chase your high score.
+          </p>
           <button onClick={() => setScreen("breakout")} style={greenButton}>Play Breakout</button>
         </div>
+
         <div style={cardStyle}>
           <h2>🎈 Balloon Pop Rush</h2>
-          <p style={{ color: "#cbd5e1", fontSize: 18 }}>A quick party-style challenge. Tap balloons fast, build combos, and avoid red traps.</p>
+          <p style={{ color: "#cbd5e1", fontSize: 18 }}>
+            A quick party-style challenge. Tap balloons fast, build combos, and avoid red traps.
+          </p>
           <button onClick={() => setScreen("poprush")} style={greenButton}>Play Pop Rush</button>
         </div>
       </div>
+
       <div style={{ marginTop: 30 }}>
         <button onClick={openOffer} style={greenButton}>🎈 Unlock Balloon Challenges</button>
         <div style={{ marginTop: 12 }}>
@@ -716,13 +915,18 @@ export default function BalloonArcade() {
       {screen === "menu" && <ArcadeMenu setScreen={setScreen} openOffer={() => setShowEmail(true)} />}
       {screen === "breakout" && <BreakoutGame goHome={() => setScreen("menu")} />}
       {screen === "poprush" && <PopRushGame goHome={() => setScreen("menu")} />}
+
       <EmailCaptureModal
         isOpen={showEmail}
         score={0}
         onClose={() => setShowEmail(false)}
-        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onSubmit={() => {
+          setShowEmail(false);
+          setShowOffer(true);
+        }}
         onContinue={() => setShowEmail(false)}
       />
+
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={() => setShowOffer(false)} />
     </div>
   );
