@@ -555,6 +555,7 @@ const endTimeRef = useRef(null);
     setShowOffer(false);
     setShowEmail(false);
     setRunning(true);
+    endTimeRef.current = Date.now() + 30000;
     setTime(30);
     setScore(0);
     setCombo(0);
