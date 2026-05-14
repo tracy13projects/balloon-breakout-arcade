@@ -280,6 +280,7 @@ function BreakoutGame({ goHome }) {
   const [showOffer, setShowOffer] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [showFinish, setShowFinish] = useState(false);
+  const [comboFlash, setComboFlash] = useState("");
 
   function createLevel(level, score = 0, high = stats.high) {
     const balloons = [];
