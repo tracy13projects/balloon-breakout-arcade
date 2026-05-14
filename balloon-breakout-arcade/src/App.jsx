@@ -575,22 +575,7 @@ const endTimeRef = useRef(null);
     startRound();
   }
 
-  useEffect(() => {
-    if (!running) return;
-    const timer = setInterval(() => {
-      setTime((t) => {
-        if (t <= 1) {
-          clearInterval(timer);
-          finishRound(score);
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [running, score]);
-
-  useEffect(() => {
+    useEffect(() => {
     if (!running) return;
     const spawner = setInterval(() => {
       const rand = Math.random();
