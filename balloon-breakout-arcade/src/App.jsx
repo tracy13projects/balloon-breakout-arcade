@@ -549,7 +549,8 @@ function PopRushGame({ goHome }) {
   const [message, setMessage] = useState("Pop as many balloons as you can before the timer ends.");
   const [showOffer, setShowOffer] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
-
+const endTimeRef = useRef(null);
+  
   function startRound() {
     setShowOffer(false);
     setShowEmail(false);
