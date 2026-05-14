@@ -570,6 +570,35 @@ const endTimeRef = useRef(null);
   }
 
   function continuePlaying() {
+function continuePlaying() {
+  setShowOffer(false);
+  setShowEmail(false);
+  startRound();
+}
+
+useEffect(() => {
+  if (!running) return;
+
+  const timer = setInterval(() => {
+    const remaining = Math.max(
+      0,
+      Math.ceil((endTimeRef.current - Date.now()) / 1000)
+    );
+
+    setTime(remaining);
+
+    if (remaining <= 0) {
+      clearInterval(timer);
+      finishRound(score);
+    }
+  }, 100);
+
+  return () => clearInterval(timer);
+}, [running, score]);
+
+useEffect(() => {
+  if (!running) return;
+  const spawner = setInterval(() => {
     setShowOffer(false);
     setShowEmail(false);
     startRound();
