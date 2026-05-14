@@ -212,12 +212,43 @@ function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 })
       return;
     }
 
-    try {
-      localStorage.setItem("balloonArcadeEmail", cleanEmail);
-      localStorage.setItem("balloonArcadeLastScore", String(score));
-    } catch (err) {
-      // Continue even if local storage is unavailable.
-    }
+   try {
+  localStorage.setItem("balloonArcadeEmail", cleanEmail);
+  localStorage.setItem("balloonArcadeLastScore", String(score));
+
+  fetch("https://a.klaviyo.com/client/subscriptions/?company_id=X6HY5n", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      revision: "2024-02-15",
+    },
+    body: JSON.stringify({
+      data: {
+        type: "subscription",
+        attributes: {
+          profile: {
+            data: {
+              type: "profile",
+              attributes: {
+                email: cleanEmail,
+              },
+            },
+          },
+        },
+        relationships: {
+          list: {
+            data: {
+              type: "list",
+              id: "Balloon Arcade Players",
+            },
+          },
+        },
+      },
+    }),
+  });
+} catch (err) {
+  // Continue even if local storage is unavailable.
+}
 
     setEmail("");
     setError("");
