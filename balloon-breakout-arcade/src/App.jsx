@@ -371,6 +371,7 @@ function BreakoutGame({ goHome }) {
     }
 
     function hitBalloon(g, b) {
+g.combo += 1;
       b.hits -= 1;
       addParticles(b.x, b.y, b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899");
       if (b.hits <= 0) {
