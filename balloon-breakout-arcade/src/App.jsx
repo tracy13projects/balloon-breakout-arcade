@@ -239,7 +239,7 @@ function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 })
           list: {
             data: {
               type: "list",
-              id: "Balloon Arcade Players",
+              id: "Xe85hd",
             },
           },
         },
