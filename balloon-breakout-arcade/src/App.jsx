@@ -174,6 +174,75 @@ function OfferModal({ isOpen, onClose, onContinue, title = "🎈 Unlock Balloon 
   );
 }
 
+
+function EmailCaptureModal({ isOpen, onClose, onSubmit, onContinue, score = 0 }) {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  if (!isOpen) return null;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !cleanEmail.includes("@")) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      localStorage.setItem("balloonArcadeEmail", cleanEmail);
+      localStorage.setItem("balloonArcadeLastScore", String(score));
+    } catch (err) {
+      // Continue even if local storage is unavailable.
+    }
+
+    setEmail("");
+    setError("");
+    onSubmit();
+  }
+
+  return (
+    <div style={modalBackdrop}>
+      <div style={modalCard}>
+        <h2>🎈 Save Your Score</h2>
+        <p style={{ fontSize: 18 }}>
+          Enter your email to unlock bonus levels, arcade updates, and future balloon challenge drops.
+        </p>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email address"
+            style={{
+              width: "100%",
+              padding: "13px 14px",
+              borderRadius: 12,
+              border: "1px solid #cbd5e1",
+              marginTop: 8,
+              fontSize: 16,
+              boxSizing: "border-box",
+            }}
+          />
+          {error && <p style={{ color: "#dc2626", marginBottom: 0 }}>{error}</p>}
+          <button type="submit" style={{ ...greenButton, width: "100%", marginTop: 14 }}>
+            Unlock Bonus Levels
+          </button>
+        </form>
+        <div
+          onClick={onContinue}
+          style={{ marginTop: 18, cursor: "pointer", color: "#475569", textDecoration: "underline", fontSize: 18 }}
+        >
+          Continue Playing Free
+        </div>
+        <button onClick={onClose} style={{ marginTop: 14, padding: "9px 14px", borderRadius: 10 }}>
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function GameShell({ title, subtitle, goHome, children }) {
   return (
     <div style={{ maxWidth: 980, margin: "0 auto", position: "relative" }}>
@@ -209,6 +278,7 @@ function BreakoutGame({ goHome }) {
   const [running, setRunning] = useState(false);
   const [message, setMessage] = useState("Move your mouse or finger to control the paddle.");
   const [showOffer, setShowOffer] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
   const [showFinish, setShowFinish] = useState(false);
 
   function createLevel(level, score = 0, high = stats.high) {
@@ -249,6 +319,7 @@ function BreakoutGame({ goHome }) {
 
   function startGame() {
     setShowOffer(false);
+    setShowEmail(false);
     setShowFinish(false);
     setRunning(true);
     setMessage("Pop the balloons and protect your lives.");
@@ -257,6 +328,7 @@ function BreakoutGame({ goHome }) {
 
   function continuePlaying() {
     setShowOffer(false);
+    setShowEmail(false);
     setShowFinish(false);
     setRunning(true);
     createLevel(stats.level || 1, stats.score || 0, stats.high || 0);
@@ -430,9 +502,16 @@ function BreakoutGame({ goHome }) {
           combo={stats.combo}
           message={message}
           onPlayAgain={startGame}
-          onUnlock={() => setShowOffer(true)}
+          onUnlock={() => setShowEmail(true)}
         />
       )}
+      <EmailCaptureModal
+        isOpen={showEmail}
+        score={stats.score}
+        onClose={() => setShowEmail(false)}
+        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onContinue={continuePlaying}
+      />
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
   );
@@ -447,9 +526,11 @@ function PopRushGame({ goHome }) {
   const [balloons, setBalloons] = useState([]);
   const [message, setMessage] = useState("Pop as many balloons as you can before the timer ends.");
   const [showOffer, setShowOffer] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
 
   function startRound() {
     setShowOffer(false);
+    setShowEmail(false);
     setRunning(true);
     setTime(30);
     setScore(0);
@@ -466,6 +547,7 @@ function PopRushGame({ goHome }) {
 
   function continuePlaying() {
     setShowOffer(false);
+    setShowEmail(false);
     startRound();
   }
 
@@ -534,7 +616,7 @@ function PopRushGame({ goHome }) {
                 combo={combo}
                 message={message}
                 onPlayAgain={startRound}
-                onUnlock={() => setShowOffer(true)}
+                onUnlock={() => setShowEmail(true)}
               />
             ) : (
               <div>
@@ -547,7 +629,13 @@ function PopRushGame({ goHome }) {
       </div>
       <p>Time: {time}s | Score: {score} | High: {highScore} | Combo: {combo}</p>
       <p style={{ color: "#cbd5e1" }}>{message}</p>
-      <button onClick={() => setShowOffer(true)} style={greenButton}>🎈 Unlock Balloon Challenges</button>
+      <EmailCaptureModal
+        isOpen={showEmail}
+        score={score}
+        onClose={() => setShowEmail(false)}
+        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onContinue={continuePlaying}
+      />
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={continuePlaying} />
     </GameShell>
   );
@@ -583,13 +671,23 @@ function ArcadeMenu({ setScreen, openOffer }) {
 export default function BalloonArcade() {
   const [screen, setScreen] = useState("menu");
   const [showOffer, setShowOffer] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
 
   return (
     <div style={pageStyle}>
-      {screen === "menu" && <ArcadeMenu setScreen={setScreen} openOffer={() => setShowOffer(true)} />}
+      {screen === "menu" && <ArcadeMenu setScreen={setScreen} openOffer={() => setShowEmail(true)} />}
       {screen === "breakout" && <BreakoutGame goHome={() => setScreen("menu")} />}
       {screen === "poprush" && <PopRushGame goHome={() => setScreen("menu")} />}
+      <EmailCaptureModal
+        isOpen={showEmail}
+        score={0}
+        onClose={() => setShowEmail(false)}
+        onSubmit={() => { setShowEmail(false); setShowOffer(true); }}
+        onContinue={() => setShowEmail(false)}
+      />
       <OfferModal isOpen={showOffer} onClose={() => setShowOffer(false)} onContinue={() => setShowOffer(false)} />
     </div>
+  );
+}
   );
 }
