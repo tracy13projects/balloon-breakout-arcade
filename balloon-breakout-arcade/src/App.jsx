@@ -372,19 +372,19 @@ function BreakoutGame({ goHome }) {
 
     function hitBalloon(g, b) {
       b.hits -= 1;
-      if (g.combo === 3) setComboFlash("✨ NICE!");
+           addParticles(b.x, b.y, b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899");
+      if (b.hits <= 0) {
+        b.hit = true;
+        const add = b.type === "gold" ? 5 : 1 + Math.floor(g.combo / 4);
+        g.score += add;
+        g.combo += 1;
+        if (g.combo === 3) setComboFlash("✨ NICE!");
 if (g.combo === 5) setComboFlash("🔥 HOT STREAK!");
 if (g.combo === 10) setComboFlash("🎈 BALLOON MASTER!");
 
 if (g.combo >= 3) {
   setTimeout(() => setComboFlash(""), 1200);
 }
-      addParticles(b.x, b.y, b.type === "gold" ? "#fde047" : b.type === "steel" ? "#94a3b8" : "#ec4899");
-      if (b.hits <= 0) {
-        b.hit = true;
-        const add = b.type === "gold" ? 5 : 1 + Math.floor(g.combo / 4);
-        g.score += add;
-        g.combo += 1;
         if (b.type === "gold") {
           g.balloons.forEach((other) => {
             if (!other.hit && Math.abs(other.x - b.x) < 60 && Math.abs(other.y - b.y) < 60) other.hit = true;
