@@ -815,7 +815,7 @@ function PopRushGame({ goHome }) {
       <div
         style={{
           position: "relative",
-          width: 100%,
+          width: "100%",
           maxWidth: 600,
           boxSizing: "border-box",
           height: 400,
