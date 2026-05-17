@@ -638,7 +638,8 @@ function BreakoutGame({ goHome }) {
             border: "4px solid #334155",
             borderRadius: 16,
             boxShadow: "0 0 35px rgba(96,165,250,.25)",
-            maxWidth: "94vw",
+            maxWidth: "100%",
+            boxSizing: "border-box",
             touchAction: "none",
           }}
         />
