@@ -10,6 +10,7 @@ const pageStyle = {
   textAlign: "center",
   padding: "28px 16px",
   fontFamily: "Arial, sans-serif",
+  overflowX: "hidden",
 };
 
 const cardStyle = {
